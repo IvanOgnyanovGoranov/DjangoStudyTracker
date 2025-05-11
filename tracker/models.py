@@ -16,10 +16,8 @@ class Subject(models.Model):
 
 
 class StudyProgress(models.Model):
-    time_studied_today = models.PositiveIntegerField()
-    total_time_studied = models.PositiveIntegerField()
-    total_days_studied = models.PositiveIntegerField()
-    last_entry_date = models.DateTimeField()
+    time_studied = models.PositiveIntegerField()
+    date = models.DateField(auto_now_add=True)
     subject = models.ForeignKey(
         to=Subject,
         on_delete=models.CASCADE,
