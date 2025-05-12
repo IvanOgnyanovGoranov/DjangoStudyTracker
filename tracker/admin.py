@@ -15,7 +15,6 @@ class SubjectAdmin(admin.ModelAdmin):
 @admin.register(StudyProgress)
 class StudyProgressAdmin(admin.ModelAdmin):
     list_display = ('subject',
-                    'total_time_studied',
                     )
 
 

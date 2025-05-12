@@ -1,8 +1,8 @@
 from datetime import datetime
 from tkinter import messagebox, simpledialog
-from date_utils import DateManager
-from timer_utils import Timer
-from subject_manager import SubjectManager
+from tracker.utils.date_utils import DateManager
+from tracker.utils.timer_utils import Timer
+from tracker.utils.subject_manager import SubjectManager
 
 class StudyTrackerApp:
     def __init__(self, window, timer_label, daily_goal_label):
