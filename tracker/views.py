@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from tracker.models import Subject
-
+from django.urls import reverse
 
 # Create your views here.
 def show_timer(request):
@@ -19,7 +19,8 @@ def subject_as_number(request, subject_number):
     """Redirects the user to the appropriate subject"""
     try:
         subject = Subject.objects.get(id=subject_number)
-        return HttpResponseRedirect('/tracker/' + subject.name)
+        redirect_path = reverse('subject_info', args=[subject.name])
+        return HttpResponseRedirect(redirect_path)
     except Subject.DoesNotExist:
         return HttpResponseNotFound('Subject not found!')
 
