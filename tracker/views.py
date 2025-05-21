@@ -4,6 +4,20 @@ from tracker.models import Subject
 from django.urls import reverse
 
 # Create your views here.
+
+
+def pick_subject(request):
+    response = ''
+    subjects = Subject.objects.values_list('name', flat=True)
+
+    for subject in subjects:
+        url = reverse('subject_info', args=[subject])
+        response += f'<li><a href="{url}">{subject.capitalize()}</a></li>'
+
+    full_data = f'<ul>{response}</ul>'
+    return HttpResponse(full_data)
+
+
 def show_timer(request):
     return HttpResponse("Here will be the timer!")
 
