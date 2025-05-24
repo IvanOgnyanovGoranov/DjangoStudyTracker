@@ -3,38 +3,43 @@ from django.shortcuts import render
 from tracker.models import Subject
 from django.urls import reverse
 
+
 # Create your views here.
 
 
-def pick_subject(request):
-    response = ''
-    subjects = Subject.objects.values_list('name', flat=True)
+def main_menu(request):
+    url1 = reverse('manage_subjects')
+    url2 = reverse('show_timer')
+    url3 = reverse('view_stats')
 
-    for subject in subjects:
-        url = reverse('subject_info', args=[subject])
-        response += f'<li><a href="{url}">{subject.capitalize()}</a></li>'
+    main_manu_options = (f'<ul>'
+                         f'<li><a href="{url1}">Manage Subjects</a></li>'
+                         f'<li><a href="{url2}">Start Timer</a></li>'
+                         f'<li><a href="{url3}">View Stats</a></li>'
+                         f'</ul>')
+    return HttpResponse(main_manu_options)
 
-    full_data = f'<ul>{response}</ul>'
-    return HttpResponse(full_data)
+
+def manage_subjects(request):
+    return HttpResponse("Here will be the subjects!")
 
 
 def show_timer(request):
     return HttpResponse("Here will be the timer!")
 
-def show_subject_info(request, subject):
-    if Subject.objects.filter(name=subject).exists():
-        return HttpResponse(f"Here will be the {subject}'s progress!")
-    return HttpResponseNotFound('Subject not found!')
+
+def view_stats(request):
+    return HttpResponse("Here will be the stats!")
+
+def main_menu_redirecting_numbers(response, number):
+    valid_numbers = [1, 2, 3]
+
+    if number not in valid_numbers:
+        return HttpResponse('This number is not valid')
+
+    # to be finished
 
 
-# If the user enters a URL as a number instead of name of subject,
-# we redirect to the appropriate subject.
-def subject_as_number(request, subject_number):
-    """Redirects the user to the appropriate subject"""
-    try:
-        subject = Subject.objects.get(id=subject_number)
-        redirect_path = reverse('subject_info', args=[subject.name])
-        return HttpResponseRedirect(redirect_path)
-    except Subject.DoesNotExist:
-        return HttpResponseNotFound('Subject not found!')
+
+
 

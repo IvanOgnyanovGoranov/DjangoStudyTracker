@@ -3,8 +3,8 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.pick_subject),
-    path('timer', views.show_timer),
-    path('<int:subject_number>', views.subject_as_number),
-    path('<str:subject>', views.show_subject_info, name='subject_info'),
+    path('', views.main_menu, name='main_menu'),
+    path('manage_subjects', views.manage_subjects, name='manage_subjects'),
+    path('show_timer', views.show_timer, name='show_timer'),
+    path('view_stats', views.view_stats, name='view_stats'),
 ]
