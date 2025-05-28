@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Study Timer</title>
+</head>
+<body>
+  <h1>Study Timer</h1>
+  <div id="timer-display" style="font-size:48px;">00:00</div>
+  <button id="start-btn">Start</button>
+  <button id="stop-btn">Stop</button>
+  <button id="reset-btn">Reset</button>
+  <script>
+    let elapsed = 0, intervalId = null;
+    const limit = 60*60;
+    const disp = document.getElementById('timer-display');
+    function fmt(s){ return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }
+    document.getElementById('start-btn').onclick = ()=> {
+      if (!intervalId && elapsed < limit) {
+        intervalId = setInterval(()=> {
+          elapsed++;
+          disp.textContent = fmt(elapsed);
+          if (elapsed >= limit) { clearInterval(intervalId); intervalId=null; alert('Time up!'); }
+        }, 1000);
+      }
+    };
+    document.getElementById('stop-btn').onclick = ()=> {
+      if (intervalId) { clearInterval(intervalId); intervalId = null; }
+    };
+    document.getElementById('reset-btn').onclick = ()=> {
+      if (confirm('Reset timer?')) {
+        clearInterval(intervalId); intervalId = null;
+        elapsed = 0; disp.textContent = fmt(elapsed);
+      }
+    };
+  </script>
+</body>
+</html>
