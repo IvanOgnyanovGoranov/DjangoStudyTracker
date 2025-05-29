@@ -4,6 +4,7 @@ from tracker.models import Subject
 from django.urls import reverse
 from django.template.loader import render_to_string
 
+# to be changed to CBV's (class based views)
 MENU_ITEMS = [
     ('manage_subjects', 'Manage Subjects'),
     ('start_studying',     'Start Studying'),
