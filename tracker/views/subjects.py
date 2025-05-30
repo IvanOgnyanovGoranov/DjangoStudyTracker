@@ -19,9 +19,10 @@ def delete_subject(request, pk):
     pass
 
 
-def add_subject(request, pk):
-    """Adds a subject to the database."""
-    pass
+def add_subject(request):
+    """User chooses what subject to add."""
+    return HttpResponse("User chooses what subject to add.")
+
 
 
 def redirect_to_view_stats(request):
