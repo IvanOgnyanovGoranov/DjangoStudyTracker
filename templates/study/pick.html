@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pick a Subject</title>
+</head>
+<body>
+  <h1>Pick a Subject to Study</h1>
+  <ul>
+    {% for subj in subjects %}
+      <li>
+        <a href="{% url 'show_timer' subj.pk %}">
+          Start {{ subj.name|title }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No subjects found. <a href="{% url 'add_subject' %}">Add one now</a>.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
