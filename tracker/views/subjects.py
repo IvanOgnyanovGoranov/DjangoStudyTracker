@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 def manage_subjects(request):
     return HttpResponse("Here will be the subjects displayed!")
 
-# No paths created for the below
+
 def edit_subject(request, pk):
     """Edits an existing subject."""
     pass
@@ -24,8 +24,8 @@ def add_subject(request, pk):
     pass
 
 
-def view_subject_stats(request, pk):
+def redirect_to_view_stats(request):
     """Redirects to the stats view."""
-    pass
+    return HttpResponseRedirect(reverse('view_stats'))
 
 

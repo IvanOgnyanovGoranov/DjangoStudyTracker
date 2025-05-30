@@ -17,12 +17,12 @@ def home_page(request):
     url2 = reverse('start_studying')
     url3 = reverse('view_stats')
 
-    main_manu_options = (f'<ul>'
+    home_page_options = (f'<ul>'
                          f'<li><a href="{url1}">Manage Subjects</a></li>'
                          f'<li><a href="{url2}">Start Studying</a></li>'
                          f'<li><a href="{url3}">View Stats</a></li>'
                          f'</ul>')
-    return HttpResponse(main_manu_options)
+    return HttpResponse(home_page_options)
 
 def home_page_redirecting_numbers(request, home_page):
     max_choice = len(MENU_ITEMS)

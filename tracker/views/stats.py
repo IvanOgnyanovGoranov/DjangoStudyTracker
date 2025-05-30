@@ -5,4 +5,13 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 
 def view_stats(request):
-    return HttpResponse("Here will be the stats!")
+    return HttpResponse("Here will be general overview of all subject stats!")
+
+
+def specific_subject_stats(request, pk):
+    subject = Subject.objects.get(pk=pk)
+    return HttpResponse("Here will be a detailed overview of the specific subject!")
+
+
+
+
