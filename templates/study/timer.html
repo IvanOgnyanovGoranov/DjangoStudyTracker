@@ -5,34 +5,95 @@
   <title>Study Timer</title>
 </head>
 <body>
-  <h2>You are currently studying {{subject|title}}</h2>
+  <h2>You are currently studying {{ subject.name|title }}</h2>
   <h1>Timer</h1>
+
   <div id="timer-display" style="font-size:48px;">00:00</div>
   <button id="start-btn">Start</button>
   <button id="stop-btn">Stop</button>
   <button id="reset-btn">Reset</button>
+
+  <!-- 1) Hidden form now sends “minutes” instead of seconds -->
+  <form id="add-time-form"
+        action="{% url 'add_study_time' subject_id=subject.pk %}"
+        method="post"
+        style="display:inline;">
+    {% csrf_token %}
+    <input type="hidden" name="minutes" id="minutes-input" value="0">
+    <button type="button" id="add-time-btn">
+      Add Time to {{ subject.name|title }}
+    </button>
+  </form>
+
   <script>
+    // 2) Timer logic (same as before)
     let elapsed = 0, intervalId = null;
-    const limit = 60*60;
+    const limit = 60 * 60;  // 60 minutes in seconds
     const disp = document.getElementById('timer-display');
-    function fmt(s){ return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }
-    document.getElementById('start-btn').onclick = ()=> {
+
+    function fmt(s) {
+      const m = Math.floor(s / 60).toString().padStart(2, '0');
+      const sec = (s % 60).toString().padStart(2, '0');
+      return `${m}:${sec}`;
+    }
+
+    document.getElementById('start-btn').onclick = () => {
       if (!intervalId && elapsed < limit) {
-        intervalId = setInterval(()=> {
+        intervalId = setInterval(() => {
           elapsed++;
           disp.textContent = fmt(elapsed);
-          if (elapsed >= limit) { clearInterval(intervalId); intervalId=null; alert('Time up!'); }
+          if (elapsed >= limit) {
+            clearInterval(intervalId);
+            intervalId = null;
+            alert('Time up!');
+          }
         }, 1000);
       }
     };
-    document.getElementById('stop-btn').onclick = ()=> {
-      if (intervalId) { clearInterval(intervalId); intervalId = null; }
-    };
-    document.getElementById('reset-btn').onclick = ()=> {
-      if (confirm('Reset timer?')) {
-        clearInterval(intervalId); intervalId = null;
-        elapsed = 0; disp.textContent = fmt(elapsed);
+
+    document.getElementById('stop-btn').onclick = () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
       }
+    };
+
+    document.getElementById('reset-btn').onclick = () => {
+      if (confirm('Reset timer?')) {
+        clearInterval(intervalId);
+        intervalId = null;
+        elapsed = 0;
+        disp.textContent = fmt(elapsed);
+      }
+    };
+
+    // 3) “Add Time” handler:
+    document.getElementById('add-time-btn').onclick = () => {
+      // Convert elapsed seconds → whole minutes
+      const minutes = Math.floor(elapsed / 60);
+
+      if (minutes < 1) {
+        alert('You must study at least 1 minute before adding time.');
+        return;
+      }
+
+      // Confirm with the user
+      const msg = `Are you sure you want to add ${minutes} minute${minutes === 1 ? '' : 's'}?`;
+      if (!confirm(msg)) {
+        return;
+      }
+
+      // Stop the timer, reset UI, and submit the form
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      }
+      disp.textContent = '00:00';
+      elapsed = 0;
+
+      // Put minutes into hidden input and submit
+      document.getElementById('minutes-input').value = minutes;
+      document.getElementById('add-time-form').submit();
     };
   </script>
 </body>
