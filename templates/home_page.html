@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+    <ul>
+        {% for view_name, label in home_page_items %}
+        <li><a href="{% url view_name %}">{{ label }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
