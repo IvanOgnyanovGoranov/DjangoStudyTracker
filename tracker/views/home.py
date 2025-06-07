@@ -11,8 +11,10 @@ MENU_ITEMS = [
     ('view_stats',     'View Stats'),
 ]
 
+
 def home_page(request):
     return render(request, 'home_page.html', {'home_page_items': MENU_ITEMS})
+
 
 def home_page_redirecting_numbers(request, home_page):
     max_choice = len(MENU_ITEMS)
