@@ -12,7 +12,6 @@ def manage_subjects(request):
 
 def edit_or_delete_subject(request, pk):
     """Edits or deletes an existing subject."""
-    # have to get the pk of the subject to redirect it to edit or delete this subject
     subject = get_object_or_404(Subject, pk=pk)
     return HttpResponse(f"Here will be the edit or delete displayed for {subject.name}!")
 

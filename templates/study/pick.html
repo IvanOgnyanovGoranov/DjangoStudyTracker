@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Pick a Subject</title>
-</head>
-<body>
-  <h1>Pick a Subject to Study</h1>
+{% extends 'base.html' %}
+
+{% block page_title %}Pick a Subject to Study{% endblock %}
+
+{% block content %}
   <ul>
     {% for subj in subjects %}
       <li>
@@ -17,5 +14,4 @@
       <li>No subjects found. <a href="{% url 'add_subject' %}">Add one now</a>.</li>
     {% endfor %}
   </ul>
-</body>
-</html>
+{% endblock %}

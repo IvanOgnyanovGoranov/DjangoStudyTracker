@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Study Timer</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block page_title %}Study Timer{% endblock %}
+
+{% block content %}
   <h2>You are currently studying {{ subject.name|title }}</h2>
   <h1>Timer</h1>
 
@@ -96,5 +94,4 @@
       document.getElementById('add-time-form').submit();
     };
   </script>
-</body>
-</html>
+{% endblock %}

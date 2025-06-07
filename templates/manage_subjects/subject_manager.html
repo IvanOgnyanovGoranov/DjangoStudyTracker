@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Subject Manager</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block page_title %}Subject Manager{% endblock %}
+
+{% block content %}
     <h1>Choose a subject to edit or delete:</h1>
     <ul>
         {% for subject in subjects %}
@@ -12,5 +10,4 @@
         {% endfor %}
             <h2><a href="{% url 'add_subject' %}">Select to add a new subject</a></h2>
     </ul>
-</body>
-</html>
+{% endblock %}
