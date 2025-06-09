@@ -18,7 +18,10 @@ def edit_or_delete_subject(request, pk):
 
 def add_subject(request):
     """User chooses what subject to add."""
-    return HttpResponse("User chooses what subject to add.")
+    # to do a check if the subject already exists.
+
+    return render(request, 'manage_subjects/add_subject.html')
+
 
 
 def redirect_to_view_stats(request):
