@@ -3,7 +3,7 @@
 {% block page_title %}Subject Manager{% endblock %}
 
 {% block content %}
-    <h1>Choose a subject to edit or delete:</h1>
+    <h1>Choose a subject to manage:</h1>
     <ul>
         {% for subject in subjects %}
             <li><a href="{% url 'edit_or_delete_subject' pk=subject.pk %}">{{ subject.name|title }}</a></li>

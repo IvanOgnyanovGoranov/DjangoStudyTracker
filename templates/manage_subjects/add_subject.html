@@ -6,10 +6,14 @@
 
 
 {% block content %}
-    <form>
+    <form method="POST">
+        {% csrf_token %}
         <label for="id_name">Subject Name:</label>
-        <input type="text" id="id_name" name="name">
+        <input type="text" id="id_name" name="subject_name">
+        
+        <label for="id_goal">Daily Goal (minutes):</label>
+        <input type="number" id="id_goal" name="daily_goal" min="0" step="1">
+        
         <button type="submit">Add</button>
     </form>
-    
 {% endblock %}

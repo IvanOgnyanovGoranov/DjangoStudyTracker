@@ -19,6 +19,12 @@ def edit_or_delete_subject(request, pk):
 def add_subject(request):
     """User chooses what subject to add."""
     # to do a check if the subject already exists.
+    if request.method == "POST" and not Subject.objects.exists():
+        new_subject = Subject(name=request.POST['subject_name'], daily_goal=request.POST['daily_goal'])
+        new_subject.save()
+        return HttpResponseRedirect(reverse('manage_subjects'))
+    elif request.method == "POST" and Subject.objects.exists():
+        pass
 
     return render(request, 'manage_subjects/add_subject.html')
 
