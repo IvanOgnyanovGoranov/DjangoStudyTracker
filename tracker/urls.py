@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.home.home_page, name='home_page'),
     path('manage_subjects/', views.subjects.manage_subjects, name='manage_subjects'),
     path('manage_subjects/add-subject/', views.subjects.add_subject, name='add_subject'),
+    path('manage_subjects/add-subject/subject-exists/', views.subjects.subject_exists, name='subject_exists'),
     path('manage_subjects/<int:pk>/edit-or-delete/', views.subjects.edit_or_delete_subject, name='edit_or_delete_subject'),
     path('manage_subjects/redirect-to-view-stats/', views.subjects.redirect_to_view_stats, name='redirect_to_view_stats'),
     path('start_studying/', views.study.start_studying, name='start_studying'),

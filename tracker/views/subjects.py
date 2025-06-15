@@ -18,16 +18,25 @@ def edit_or_delete_subject(request, pk):
 
 def add_subject(request):
     """User chooses what subject to add."""
-    # to do a check if the subject already exists.
-    if request.method == "POST" and not Subject.objects.exists():
-        new_subject = Subject(name=request.POST['subject_name'], daily_goal=request.POST['daily_goal'])
-        new_subject.save()
-        return HttpResponseRedirect(reverse('manage_subjects'))
-    elif request.method == "POST" and Subject.objects.exists():
-        pass
+    # Additional checks to be made here
+    if request.method == "POST":
+        name = request.POST.get('subject_name', '').strip()
+        goal = int(request.POST.get('daily_goal', 0))
+
+
+        if not Subject.objects.filter(name__iexact=name).exists():
+            Subject.objects.create(name=name, daily_goal=goal)
+            return redirect('manage_subjects')
+        else:
+            return render(request, 'manage_subjects/subject_exists.html', {
+                'subject_name': name
+            })
 
     return render(request, 'manage_subjects/add_subject.html')
 
+
+def subject_exists(request):
+    return render(request, 'manage_subjects/subject_exists.html')
 
 
 def redirect_to_view_stats(request):
