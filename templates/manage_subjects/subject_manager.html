@@ -3,11 +3,14 @@
 {% block page_title %}Subject Manager{% endblock %}
 
 {% block content %}
-    <h1>Choose a subject to manage:</h1>
+    {% include 'includes/header.html'%}
+    <h1>Subjects:</h1>
     <ul>
         {% for subject in subjects %}
-            <li><a href="{% url 'edit_or_delete_subject' pk=subject.pk %}">{{ subject.name|title }}</a></li>
+            <li><a href="{% url 'edit_or_delete_subject' pk=subject.pk %}">{{ subject.name|title }} </a></li>
+            <p> - Daily goal : {{ subject.daily_goal }} </p>
         {% endfor %}
-            <h2><a href="{% url 'add_subject' %}">Select to add a new subject</a></h2>
+            <h2><a href="{% url 'add_subject' %}">Add a new subject</a></h2>
     </ul>
+    
 {% endblock %}

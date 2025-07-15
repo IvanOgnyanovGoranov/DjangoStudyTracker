@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from tracker.models import Subject
@@ -22,7 +23,6 @@ def add_subject(request):
     if request.method == "POST":
         name = request.POST.get('subject_name', '').strip()
         goal = int(request.POST.get('daily_goal', 0))
-
 
         if not Subject.objects.filter(name__iexact=name).exists():
             Subject.objects.create(name=name, daily_goal=goal)

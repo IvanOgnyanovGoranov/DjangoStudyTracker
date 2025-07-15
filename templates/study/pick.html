@@ -3,6 +3,8 @@
 {% block page_title %}Pick a Subject to Study{% endblock %}
 
 {% block content %}
+{% include 'includes/header.html'%}
+
   <ul>
     {% for subj in subjects %}
       <li>

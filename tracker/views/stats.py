@@ -10,7 +10,8 @@ def view_stats(request):
 
 def specific_subject_stats(request, pk):
     subject = Subject.objects.get(pk=pk)
-    return HttpResponse("Here will be a detailed overview of the specific subject!")
+
+    return HttpResponse(f"Here will be a detailed overview of the specific subject!")
 
 
 
