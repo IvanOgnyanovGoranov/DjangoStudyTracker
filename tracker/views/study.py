@@ -12,7 +12,7 @@ def start_studying(request):
     subjects = Subject.objects.all()
     return render(request, 'study/pick.html', {'subjects': subjects})
 
-
+# to be changed to a message (no straight redirect)
 def redirect_if_no_subject(request):
     """User clicks on Add to add a subject and is redirected to add_subject"""
     return HttpResponseRedirect(reverse('add_subject'))
@@ -43,3 +43,10 @@ def add_study_time(request, subject_id):
         # Redirect back to the same timer page
     return redirect('show_timer', pk=subject_id)
 
+def subject_redirect_by_number(request, subject_number):
+    subjects_count = Subject.objects.count()
+    if not (1 <= subject_number <= subjects_count):
+        return HttpResponseNotFound('This number is out of range!')
+
+    url = reverse('show_timer', kwargs={'pk': subject_number})
+    return HttpResponseRedirect(url)

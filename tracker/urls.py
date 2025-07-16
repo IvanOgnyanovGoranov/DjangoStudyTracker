@@ -12,9 +12,9 @@ urlpatterns = [
     path('manage_subjects/redirect-to-view-stats/', views.subjects.redirect_to_view_stats, name='redirect_to_view_stats'),
     path('start_studying/', views.study.start_studying, name='start_studying'),
     path('start_studying/redirect-if-no-subject', views.study.redirect_if_no_subject, name='redirect_if_no_subject'),
+    path('start_studying/<int:subject_number>', views.study.subject_redirect_by_number, name='subject_redirect_by_number'),
     path('start_studying/timer/<int:pk>/', views.study.show_timer, name='show_timer'),
     path('start_studying/timer/<int:subject_id>/add-study-time/', views.study.add_study_time, name='add_study_time'),
     path('view_stats/', views.stats.view_stats, name='view_stats'),
     path('view_stats/<int:pk>/', views.stats.specific_subject_stats, name='specific_subject_stats'),
-    path('<int:home_page>/', views.home.home_page_redirecting_numbers, name='home_page_redirecting_numbers'),
 ]
