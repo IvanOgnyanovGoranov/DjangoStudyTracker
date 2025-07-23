@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'tracker.css' %}">
+{% endblock %}
 
 {% block page_title %}Home{% endblock %}
     
