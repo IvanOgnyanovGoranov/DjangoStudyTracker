@@ -32,7 +32,6 @@ def add_study_time(request, subject_id):
         minutes = int(request.POST.get('minutes', 0))
         subj = get_object_or_404(Subject, pk=subject_id)
 
-        # Find or create today's StudyProgress
         progress, created = StudyProgress.objects.get_or_create(
             subject=subj,
             date=date.today(),
@@ -41,8 +40,8 @@ def add_study_time(request, subject_id):
         progress.time_studied += minutes
         progress.save()
 
-        # Redirect back to the same timer page
     return redirect('show_timer', pk=subject_id)
+
 
 def subject_redirect_by_number(request, subject_number):
     """Redirects to respective subject when a number is entered in the URL"""

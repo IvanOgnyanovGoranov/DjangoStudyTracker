@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    Subject Info
+{% endblock %}
+
+{% block content %}
+    {% include 'includes/header.html'%}
+    <h3> {{subject.name|title}} Info: </h3>
+    <p>Daily Goal: {{subject.daily_goal}} minutes</p>
+    <p>Total Time Studied: {{progress}} minutes</p>
+{% endblock %}
+
+
+
+

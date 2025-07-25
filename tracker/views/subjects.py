@@ -1,7 +1,9 @@
 from django.contrib import messages
+from django.db.models import Sum, Value
+from django.db.models.functions import Coalesce
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from tracker.models import Subject
+from tracker.models import Subject, StudyProgress
 from django.urls import reverse
 from django.template.loader import render_to_string
 
@@ -12,9 +14,10 @@ def manage_subjects(request):
 
 
 def edit_or_delete_subject(request, pk):
-    """Edits or deletes an existing subject."""
+    """Shows subject info with the option to edit or delete it."""
     subject = get_object_or_404(Subject, pk=pk)
-    return HttpResponse(f"Here will be the edit or delete displayed for {subject.name}!")
+    subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(total_minutes=Coalesce(Sum('time_studied'), Value(0)))
+    return render(request, 'manage_subjects/subject_info.html', {'subject': subject, 'progress': subject_progress['total_minutes']})
 
 
 def add_subject(request):
