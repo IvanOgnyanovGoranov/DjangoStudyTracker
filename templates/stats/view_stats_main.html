@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block page_title %} General Stats {% endblock %}
+
+{% block content %}
+{% include 'includes/header.html'%}
+
+<h2> Click on the subject to see more details. </h2>
+<ul>
+    {% for subj in subjects %}
+      <li>
+        <a href="{% url 'detailed_subject_stats' subj.pk %}">
+          {{ subj.name|title }}
+        </a>
+      </li>
+    {% empty %}
+      <li>No subjects found. <a href="{% url 'add_subject' %}">Add one now</a>.</li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

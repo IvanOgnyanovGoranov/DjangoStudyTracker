@@ -8,11 +8,11 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 
 
-def manage_subjects(request):
+def my_subjects(request):
     subjects = Subject.objects.all()
     return render(request, 'manage_subjects/subject_manager.html', {'subjects': subjects})
 
-
+# This view will be changed to the main view stats URL
 def edit_or_delete_subject(request, pk):
     """Shows subject info with the option to edit or delete it."""
     subject = get_object_or_404(Subject, pk=pk)
@@ -31,11 +31,11 @@ def add_subject(request):
             Subject.objects.create(name=name, daily_goal=goal)
             return redirect('manage_subjects')
         else:
-            return render(request, 'manage_subjects/subject_exists.html', {
+            return render(request, 'subject_exists.html', {
                 'subject_name': name
             })
 
-    return render(request, 'manage_subjects/add_subject.html')
+    return render(request, 'add_subject.html')
 
 
 def subject_exists(request):
