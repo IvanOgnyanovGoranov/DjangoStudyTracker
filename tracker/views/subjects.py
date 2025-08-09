@@ -10,10 +10,10 @@ from django.template.loader import render_to_string
 
 def my_subjects(request):
     subjects = Subject.objects.all()
-    return render(request, 'manage_subjects/subject_manager.html', {'subjects': subjects})
+    return render(request, 'my_subjects.html', {'subjects': subjects})
 
 # This view will be changed to the main view stats URL
-def edit_or_delete_subject(request, pk):
+def manage_subject(request, pk):
     """Shows subject info with the option to edit or delete it."""
     subject = get_object_or_404(Subject, pk=pk)
     subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(total_minutes=Coalesce(Sum('time_studied'), Value(0)))
@@ -29,7 +29,7 @@ def add_subject(request):
 
         if not Subject.objects.filter(name__iexact=name).exists():
             Subject.objects.create(name=name, daily_goal=goal)
-            return redirect('manage_subjects')
+            return redirect('my_subjects')
         else:
             return render(request, 'subject_exists.html', {
                 'subject_name': name
@@ -39,7 +39,7 @@ def add_subject(request):
 
 
 def subject_exists(request):
-    return render(request, 'manage_subjects/subject_exists.html')
+    return render(request, 'subject_exists.html')
 
 
 def redirect_to_view_stats(request):

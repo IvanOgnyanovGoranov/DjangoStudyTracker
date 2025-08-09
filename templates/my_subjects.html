@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Subject Manager{% endblock %}
+
+{% block content %}
+    {% include 'includes/header.html'%}
+    <h1>Subjects:</h1>
+    <ul>
+        {% for subject in subjects %}
+            <li> {{ subject.name|title }} </li>
+            <a href="{% url 'manage_subject' pk=subject.pk %}"> Manage </a>
+            <a href="{% url 'start_studying' pk=subject.pk %}"> Start Studying </a>
+            <a href="{% url 'detailed_subject_stats' pk=subject.pk %}"> View Stats </a>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}
