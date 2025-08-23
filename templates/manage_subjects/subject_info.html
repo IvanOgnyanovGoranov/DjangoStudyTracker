@@ -6,9 +6,22 @@
 
 {% block content %}
     {% include 'includes/header.html'%}
+
     <h3> {{subject.name|title}} Info: </h3>
     <p>Daily Goal: {{subject.daily_goal}} minutes</p>
     <p>Total Time Studied: {{progress}} minutes</p>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="new_goal">New Daily Goal </label>
+        <input id="new_goal" name="new_goal" type="text">
+        <button>Edit</button>
+    </form>
+    <button>Delete</button>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
 
 
