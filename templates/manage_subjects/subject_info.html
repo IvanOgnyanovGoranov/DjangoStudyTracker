@@ -17,11 +17,13 @@
         <button>Edit</button>
     </form>
     <button>Delete</button>
+
     {% if messages %}
         {% for message in messages %}
             <div class="alert">{{ message }}</div>
         {% endfor %}
     {% endif %}
+
 {% endblock %}
 
 
