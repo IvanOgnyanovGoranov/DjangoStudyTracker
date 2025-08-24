@@ -10,13 +10,20 @@
     <h3> {{subject.name|title}} Info: </h3>
     <p>Daily Goal: {{subject.daily_goal}} minutes</p>
     <p>Total Time Studied: {{progress}} minutes</p>
+
     <form method="POST">
         {% csrf_token %}
+        <input type="hidden" name="action" value="edit_goal">
         <label for="new_goal">New Daily Goal </label>
         <input id="new_goal" name="new_goal" type="text">
         <button>Edit</button>
     </form>
-    <button>Delete</button>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="delete_subject">
+        <button>Delete Subject</button>
+    </form>
 
     {% if messages %}
         {% for message in messages %}

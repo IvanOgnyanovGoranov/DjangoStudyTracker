@@ -19,10 +19,16 @@ def manage_subject(request, pk):
     subject = get_object_or_404(Subject, pk=pk)
 
     if request.method == 'POST':
-        entered_goal = request.POST['new_goal']
-        subject.daily_goal = entered_goal
-        subject.save()
-        messages.success(request, "Daily goal updated successfully!")
+        action = request.POST.get('action')
+        if action == 'edit_goal':
+            entered_goal = request.POST['new_goal']
+            subject.daily_goal = entered_goal
+            subject.save()
+            messages.success(request, "Daily goal updated successfully!")
+        elif action == 'delete_subject':
+            subject.delete()
+            messages.success(request, "Subject deleted successfully!") # Unreadable because of the redirect.
+            return redirect('my_subjects')
 
     subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(total_minutes=Coalesce(Sum('time_studied'), Value(0)))
     return render(request, 'manage_subjects/subject_info.html', {'subject': subject, 'progress': subject_progress['total_minutes']})
