@@ -7,6 +7,7 @@ from tracker.models import Subject, StudyProgress
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.contrib import messages
+from tracker.forms import EditSubject
 
 
 def my_subjects(request):
@@ -21,17 +22,22 @@ def manage_subject(request, pk):
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'edit_goal':
-            entered_goal = request.POST['new_goal']
-            subject.daily_goal = entered_goal
-            subject.save()
-            messages.success(request, "Daily goal updated successfully!")
+            form = EditSubject(request.POST)
+
+            if form.is_valid():
+                entered_goal = form.cleaned_data
+                subject.daily_goal = entered_goal['new_daily_goal']
+                subject.save()
+                messages.success(request, "Daily goal updated successfully!")
         elif action == 'delete_subject':
             subject.delete()
-            messages.success(request, "Subject deleted successfully!") # Unreadable because of the redirect.
+            messages.success(request, "Subject deleted successfully!") # Not displayed because of the redirect.
             return redirect('my_subjects')
 
+    form = EditSubject()
+
     subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(total_minutes=Coalesce(Sum('time_studied'), Value(0)))
-    return render(request, 'manage_subjects/subject_info.html', {'subject': subject, 'progress': subject_progress['total_minutes']})
+    return render(request, 'manage_subjects/subject_info.html', {'subject': subject, 'progress': subject_progress['total_minutes'], 'form': form})
 
 
 def add_subject(request):
