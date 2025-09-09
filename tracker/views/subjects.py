@@ -32,9 +32,10 @@ def manage_subject(request, pk):
         elif action == 'delete_subject':
             subject.delete()
             messages.success(request, "Subject deleted successfully!") # Not displayed because of the redirect.
+            # Add a form in form.py instead of redirect
             return redirect('my_subjects')
-
-    form = EditSubject()
+    else:
+        form = EditSubject()
 
     subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(total_minutes=Coalesce(Sum('time_studied'), Value(0)))
     return render(request, 'manage_subjects/subject_info.html', {'subject': subject, 'progress': subject_progress['total_minutes'], 'form': form})
