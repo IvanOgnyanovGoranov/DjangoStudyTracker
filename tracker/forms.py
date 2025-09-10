@@ -2,3 +2,8 @@ from django import forms
 
 class EditSubject(forms.Form):
     new_daily_goal = forms.IntegerField()
+
+
+class AddSubject(forms.Form):
+    subject_name = forms.CharField(max_length=20)
+    daily_goal = forms.IntegerField()

@@ -14,8 +14,6 @@
     <form method="POST">
         {% csrf_token %}
         <input type="hidden" name="action" value="edit_goal">
-<!--        <label for="new_goal">New Daily Goal </label>-->
-<!--        <input id="new_goal" name="new_goal" type="text">-->
         {{ form }}
         <button>Edit</button>
     </form>

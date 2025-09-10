@@ -7,7 +7,7 @@ from tracker.models import Subject, StudyProgress
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.contrib import messages
-from tracker.forms import EditSubject
+from tracker.forms import EditSubject, AddSubject
 
 
 def my_subjects(request):
@@ -45,18 +45,21 @@ def add_subject(request):
     """User chooses what subject to add."""
     # Add pop up if user doesn't enter minutes
     if request.method == "POST":
-        name = request.POST.get('subject_name', '').strip()
-        goal = int(request.POST.get('daily_goal', 0))
- 
-        if not Subject.objects.filter(name__iexact=name).exists():
-            Subject.objects.create(name=name, daily_goal=goal)
-            return redirect('my_subjects')
-        else:
-            return render(request, 'subject_exists.html', {
-                'subject_name': name
-            })
+        form = AddSubject(request.POST)
 
-    return render(request, 'add_subject.html')
+        if form.is_valid():
+            entered_data = form.cleaned_data
+ 
+            if not Subject.objects.filter(name__iexact=entered_data['subject_name']).exists():
+                Subject.objects.create(name=entered_data['subject_name'], daily_goal=entered_data['daily_goal'])
+                return redirect('my_subjects')
+            else:
+                return render(request, 'subject_exists.html', {
+                    'subject_name': entered_data
+                })
+    form = AddSubject()
+
+    return render(request, 'add_subject.html', {'form': form})
 
 
 def subject_exists(request):
@@ -66,5 +69,3 @@ def subject_exists(request):
 def redirect_to_view_stats(request):
     """Redirects to the stats view."""
     return HttpResponseRedirect(reverse('view_stats'))
-
-
