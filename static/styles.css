@@ -1,11 +1,79 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@400;600;800&display=swap');
 
-html {
+html, body {
+  margin: 0;
+  padding: 0;
   font-family: "Fira Sans Condensed", sans-serif;
-  font-weight: 400;
-  font-style: italic;
+  background-color: #f9fafc;
+  color: #333;
+  line-height: 1.6;
 }
 
-body {
-    margin: 0;
+/* Header */
+h4 {
+  margin: 0;
+  padding: 1rem 2rem;
+  background: #1e3a8a;   /* deep blue */
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
+
+/* Main content block */
+body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Forms */
+form {
+  background: white;
+  padding: 2rem;
+  margin: 2rem 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+}
+
+/* Buttons */
+button {
+  background-color: #2563eb; /* blue */
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Messages (alerts will still pop, but if you want inline styling later) */
+.message {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+
+.message.success { background: #dcfce7; color: #166534; }
+.message.error   { background: #fee2e2; color: #991b1b; }
+.message.info    { background: #dbeafe; color: #1e40af; }

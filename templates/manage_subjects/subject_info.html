@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block page_title %}
     Subject Info
 {% endblock %}
 
 {% block content %}
-    {% include 'includes/header.html'%}
+{% include 'includes/header.html'%}
 
     <h3> {{subject.name|title}} Info: </h3>
     <p>Daily Goal: {{subject.daily_goal}} minutes</p>
@@ -13,8 +14,11 @@
 
     <form method="POST">
         {% csrf_token %}
+
         <input type="hidden" name="action" value="edit_goal">
-        {{ form }}
+        {{ form.new_daily_goal.label_tag }}
+        {{ form.new_daily_goal }}
+
         <button>Edit</button>
     </form>
 

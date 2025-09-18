@@ -57,7 +57,8 @@ def add_subject(request):
                 return render(request, 'subject_exists.html', {
                     'subject_name': entered_data
                 })
-    form = AddSubject()
+    else:
+        form = AddSubject()
 
     return render(request, 'add_subject.html', {'form': form})
 
