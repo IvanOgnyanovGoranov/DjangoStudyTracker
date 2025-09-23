@@ -49,9 +49,9 @@ def add_subject(request):
 
         if form.is_valid():
             entered_data = form.cleaned_data
- 
-            if not Subject.objects.filter(name__iexact=entered_data['subject_name']).exists():
-                Subject.objects.create(name=entered_data['subject_name'], daily_goal=entered_data['daily_goal'])
+
+            if not Subject.objects.filter(name__iexact=entered_data['name']).exists():
+                Subject.objects.create(name=entered_data['name'], daily_goal=entered_data['daily_goal'])
                 return redirect('my_subjects')
             else:
                 return render(request, 'subject_exists.html', {
