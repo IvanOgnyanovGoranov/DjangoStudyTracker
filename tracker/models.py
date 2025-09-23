@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 # Create your models here.
@@ -11,7 +12,10 @@ class Subject(models.Model):
         auto_now_add=True
     )
     daily_goal = models.PositiveIntegerField(
-        #default=0
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(1080)
+        ]
     )
 
 

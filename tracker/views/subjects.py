@@ -7,7 +7,7 @@ from tracker.models import Subject, StudyProgress
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.contrib import messages
-from tracker.forms import EditSubject, AddSubject
+from tracker.forms import EditSubjectForm, AddSubjectForm
 
 
 def my_subjects(request):
@@ -22,7 +22,7 @@ def manage_subject(request, pk):
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'edit_goal':
-            form = EditSubject(request.POST)
+            form = EditSubjectForm(request.POST)
 
             if form.is_valid():
                 entered_goal = form.cleaned_data
@@ -35,7 +35,7 @@ def manage_subject(request, pk):
             # Add a form in form.py instead of redirect
             return redirect('my_subjects')
     else:
-        form = EditSubject()
+        form = EditSubjectForm()
 
     subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(total_minutes=Coalesce(Sum('time_studied'), Value(0)))
     return render(request, 'manage_subjects/subject_info.html', {'subject': subject, 'progress': subject_progress['total_minutes'], 'form': form})
@@ -45,7 +45,7 @@ def add_subject(request):
     """User chooses what subject to add."""
     # Add pop up if user doesn't enter minutes
     if request.method == "POST":
-        form = AddSubject(request.POST)
+        form = AddSubjectForm(request.POST)
 
         if form.is_valid():
             entered_data = form.cleaned_data
@@ -58,7 +58,7 @@ def add_subject(request):
                     'subject_name': entered_data
                 })
     else:
-        form = AddSubject()
+        form = AddSubjectForm()
 
     return render(request, 'add_subject.html', {'form': form})
 
