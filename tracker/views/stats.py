@@ -4,6 +4,7 @@ from tracker.models import Subject
 from django.urls import reverse
 from django.template.loader import render_to_string
 
+# Unused
 def view_stats(request):
     subjects = Subject.objects.all()
 

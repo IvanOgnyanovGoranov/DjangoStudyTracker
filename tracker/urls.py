@@ -9,7 +9,7 @@ urlpatterns = [
     path('my-subjects/start-studying/<int:pk>/', views.study.start_studying, name='start_studying'),
     path('start_studying/timer/<int:subject_id>/add-study-time/', views.study.add_study_time, name='add_study_time'),
 
-    path('my-subjects/manage/<int:pk>', views.subjects.manage_subject, name='manage_subject'),
+    path('my-subjects/manage/<int:pk>', views.subjects.ManageSubjectView.as_view(), name='manage_subject'),
     path('my-subjects/view_stats/<int:pk>/', views.stats.detailed_subject_stats, name='detailed_subject_stats'),
 
     path('add-subject/', views.subjects.add_subject, name='add_subject'),
