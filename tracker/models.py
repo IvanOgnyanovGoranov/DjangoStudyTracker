@@ -1,5 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.db.models import Q
+
 
 # Create your models here.
 
@@ -17,6 +19,14 @@ class Subject(models.Model):
             MaxValueValidator(1080)
         ]
     )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                check=Q(daily_goal__lte=1080) & Q(daily_goal__gte=1),
+                name='daily_goal_range'
+            )
+        ]
 
 
 class StudyProgress(models.Model):
