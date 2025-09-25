@@ -1,10 +1,17 @@
 from django import forms
 
-from tracker.models import Subject
+from tracker.models import Subject, EditSubject
 
 
-class EditSubjectForm(forms.Form):
-    new_daily_goal = forms.IntegerField(min_value=1, max_value=1080)
+class EditSubjectForm(forms.ModelForm):
+    new_daily_goal = forms.IntegerField(
+        min_value=1,
+        max_value=1080
+    )
+
+    class Meta:
+        model = EditSubject
+        fields = ['new_daily_goal']
 
 
 class AddSubjectForm(forms.ModelForm):

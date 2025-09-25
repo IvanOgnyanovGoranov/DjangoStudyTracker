@@ -11,7 +11,7 @@ from tracker.forms import EditSubjectForm, AddSubjectForm
 from django.views import View
 
 def my_subjects(request):
-    subjects = Subject.objects.all().order_by('-creation_date')
+    subjects = Subject.objects.all().order_by('-created_at')
     return render(request, 'my_subjects.html', {'subjects': subjects})
 
 class ManageSubjectView(View):
