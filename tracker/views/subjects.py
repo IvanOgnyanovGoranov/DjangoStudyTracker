@@ -33,6 +33,10 @@ class ManageSubjectView(View):
         if action == 'edit_goal':
             form = EditSubjectForm(request.POST)
             if form.is_valid():
+                edit = form.save(commit=False)
+                edit.subject = subject
+                edit.save()
+
                 entered_goal = form.cleaned_data
                 subject.daily_goal = entered_goal['new_daily_goal']
                 subject.save()
