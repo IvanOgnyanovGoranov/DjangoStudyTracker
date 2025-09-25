@@ -7,7 +7,7 @@ from tracker.models import Subject, StudyProgress
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ('name',
-                    'creation_date',
+                    'created_at',
                     'daily_goal',
                     )
 

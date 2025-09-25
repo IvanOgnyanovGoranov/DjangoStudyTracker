@@ -11,7 +11,7 @@ from tracker.forms import EditSubjectForm, AddSubjectForm
 from django.views import View
 
 def my_subjects(request):
-    subjects = Subject.objects.all()
+    subjects = Subject.objects.all().order_by('-creation_date')
     return render(request, 'my_subjects.html', {'subjects': subjects})
 
 class ManageSubjectView(View):
@@ -44,41 +44,16 @@ class ManageSubjectView(View):
             messages.success(request, "Subject deleted successfully!")  # Not displayed because of the redirect.
             # Add a form in form.py instead of redirect
             return redirect('my_subjects')
-        return None
 
+class AddSubjectView(View):
+    """User adds a new subject."""
+    def get(self, request):
+        form = AddSubjectForm()
+        return render(request, 'add_subject.html', {'form': form})
 
-def manage_subject(request, pk):
-    """Shows subject info with the option to edit or delete it."""
-    subject = get_object_or_404(Subject, pk=pk)
-
-    if request.method == 'POST':
-        action = request.POST.get('action')
-        if action == 'edit_goal':
-            form = EditSubjectForm(request.POST)
-
-            if form.is_valid():
-                entered_goal = form.cleaned_data
-                subject.daily_goal = entered_goal['new_daily_goal']
-                subject.save()
-                messages.success(request, "Daily goal updated successfully!")
-        elif action == 'delete_subject':
-            subject.delete()
-            messages.success(request, "Subject deleted successfully!") # Not displayed because of the redirect.
-            # Add a form in form.py instead of redirect
-            return redirect('my_subjects')
-    else:
-        form = EditSubjectForm()
-
-    subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(total_minutes=Coalesce(Sum('time_studied'), Value(0)))
-    return render(request, 'manage_subjects/subject_info.html', {'subject': subject, 'progress': subject_progress['total_minutes'], 'form': form})
-
-
-def add_subject(request):
-    """User chooses what subject to add."""
+    def post(self, request):
     # Add pop up if user doesn't enter minutes
-    if request.method == "POST":
         form = AddSubjectForm(request.POST)
-
         if form.is_valid():
             entered_data = form.cleaned_data
 
@@ -89,10 +64,8 @@ def add_subject(request):
                 return render(request, 'subject_exists.html', {
                     'subject_name': entered_data
                 })
-    else:
-        form = AddSubjectForm()
-
-    return render(request, 'add_subject.html', {'form': form})
+        else:
+            return render(request, 'add_subject.html', {'form': form})
 
 
 def subject_exists(request):

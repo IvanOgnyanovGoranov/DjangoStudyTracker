@@ -8,12 +8,13 @@ class EditSubjectForm(forms.Form):
 
 
 class AddSubjectForm(forms.ModelForm):
+    daily_goal = forms.IntegerField(
+        min_value=1,
+        max_value=1080,
+    )
     class Meta:
         model = Subject
         fields = ['name', 'daily_goal']
         labels = {
             'name': 'Subject Name',
-        }
-        widgets = {
-            'daily_goal': forms.NumberInput(attrs={'max': 1080, 'min': 1})
         }

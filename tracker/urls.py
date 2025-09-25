@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .views import home, subjects, study, stats
-from .views.subjects import add_subject, manage_subject, redirect_to_view_stats
+from .views.subjects import redirect_to_view_stats
 
 urlpatterns = [
     path('', views.home.home_page, name='home_page'),
@@ -12,6 +12,6 @@ urlpatterns = [
     path('my-subjects/manage/<int:pk>', views.subjects.ManageSubjectView.as_view(), name='manage_subject'),
     path('my-subjects/view_stats/<int:pk>/', views.stats.detailed_subject_stats, name='detailed_subject_stats'),
 
-    path('add-subject/', views.subjects.add_subject, name='add_subject'),
+    path('add-subject/', views.subjects.AddSubjectView.as_view(), name='add_subject'),
     path('add-subject/subject-exists/', views.subjects.subject_exists, name='subject_exists'),
 ]
