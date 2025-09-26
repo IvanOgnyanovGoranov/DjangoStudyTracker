@@ -6,7 +6,7 @@ from tracker.models import Subject, EditSubject
 class EditSubjectForm(forms.ModelForm):
     new_daily_goal = forms.IntegerField(
         min_value=1,
-        max_value=1080
+        max_value=1080,
     )
 
     class Meta:

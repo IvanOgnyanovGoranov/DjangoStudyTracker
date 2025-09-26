@@ -1,4 +1,6 @@
 from datetime import date
+
+from django.contrib import messages
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from tracker.models import Subject, StudyProgress
@@ -24,15 +26,19 @@ def add_study_time(request, subject_id):
     """Adds the time studied to the subject."""
     if request.method == "POST":
         minutes = int(request.POST.get('minutes', 0))
-        subj = get_object_or_404(Subject, pk=subject_id)
+        subject = get_object_or_404(Subject, pk=subject_id)
 
-        progress, created = StudyProgress.objects.get_or_create(
-            subject=subj,
-            date=date.today(),
-            defaults={'time_studied': 0}
-        )
-        progress.time_studied += minutes
-        progress.save()
+        if minutes >= 1:
+            study_session = StudyProgress.objects.create(
+                subject=subject,
+                studied_on=date.today(),
+                time_studied=minutes
+            )
+
+            study_session.save()
+
+        else:
+            messages.error(request, "Please enter a valid number of minutes.")
 
     return redirect('start_studying', pk=subject_id)
 

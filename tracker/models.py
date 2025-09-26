@@ -39,7 +39,7 @@ class StudyProgress(models.Model):
     time_studied = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)],
     )
-    studied_on = models.DateField(
+    studied_on = models.DateTimeField(
         auto_now_add=True
     )
 
