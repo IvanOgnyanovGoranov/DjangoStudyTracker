@@ -13,7 +13,6 @@
   <button id="stop-btn">Stop</button>
   <button id="reset-btn">Reset</button>
 
-  <!-- 1) Hidden form now sends “minutes” instead of seconds -->
   <form id="add-time-form"
         action="{% url 'add_study_time' subject_id=subject.pk %}"
         method="post"

@@ -19,17 +19,17 @@
         <button>Edit</button>
     </form>
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="action" value="delete_subject">
-        <button>Delete Subject</button>
+    <form method="post" action="">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="delete_subject">
+      <button type="submit" onclick="return confirmDelete()">Delete Subject</button>
     </form>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+<script>
+function confirmDelete() {
+    return confirm("Are you sure you want to delete this subject and all its history?");
+}
+</script>
 
 {% endblock %}
 

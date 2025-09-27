@@ -16,18 +16,24 @@ def my_subjects(request):
 
 class ManageSubjectView(View):
 
-    def get(self, request, pk):
+    def get_subject_and_progress(self, pk):
         subject = get_object_or_404(Subject, pk=pk)
-        form = EditSubjectForm()
-
         subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(
-            total_minutes=Coalesce(Sum('time_studied'), Value(0)))
-        return render(request, 'manage_subjects/subject_info.html',
-                      {'subject': subject, 'progress': subject_progress['total_minutes'], 'form': form})
+            total_minutes=Coalesce(Sum('time_studied'), Value(0))
+        )
+        return subject, subject_progress['total_minutes']
+
+    def get(self, request, pk):
+        subject, progress = self.get_subject_and_progress(pk)
+        form = EditSubjectForm()
+        return render(request, 'manage_subjects/subject_info.html', {
+            'subject': subject,
+            'progress': progress,
+            'form': form
+        })
 
     def post(self, request, pk):
-
-        subject = get_object_or_404(Subject, pk=pk)
+        subject, progress = self.get_subject_and_progress(pk)
         action = request.POST.get('action')
 
         if action == 'edit_goal':
@@ -37,16 +43,20 @@ class ManageSubjectView(View):
                 edit.subject = subject
                 edit.save()
 
-                entered_goal = form.cleaned_data
-                subject.daily_goal = entered_goal['new_daily_goal']
+                subject.daily_goal = form.cleaned_data['new_daily_goal']
                 subject.save()
                 messages.success(request, "Daily goal updated successfully!")
                 return redirect('my_subjects')
+            else:
+                return render(request, 'manage_subjects/subject_info.html', {
+                    'subject': subject,
+                    'progress': progress,
+                    'form': form
+                })
 
         elif action == 'delete_subject':
             subject.delete()
-            messages.success(request, "Subject deleted successfully!")  # Not displayed because of the redirect.
-            # Add a form in form.py instead of redirect
+            messages.success(request, "Subject deleted successfully!")
             return redirect('my_subjects')
 
 class AddSubjectView(View):
@@ -56,19 +66,17 @@ class AddSubjectView(View):
         return render(request, 'add_subject.html', {'form': form})
 
     def post(self, request):
-    # Add pop up if user doesn't enter minutes
         form = AddSubjectForm(request.POST)
-        if form.is_valid():
-            entered_data = form.cleaned_data
 
-            if not Subject.objects.filter(name__iexact=entered_data['name']).exists():
-                form.save()
-                return redirect('my_subjects')
-            else:
-                return render(request, 'subject_exists.html', {
-                    'subject_name': entered_data
-                })
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Subject added successfully!")
+            return redirect('my_subjects')
+
         else:
+            # for field, errors in form.errors.items():
+            #     for error in errors:
+            #         messages.error(request, error)
             return render(request, 'add_subject.html', {'form': form})
 
 

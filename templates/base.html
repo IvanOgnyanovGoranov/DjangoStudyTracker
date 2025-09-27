@@ -13,10 +13,18 @@
      {% if messages %}
       <script>
         {% for msg in messages %}
-          alert({{ msg|escapejs }});
+          alert("{{ msg|escapejs }}");
         {% endfor %}
       </script>
     {% endif %}
+
+<!--    {% if messages %}-->
+<!--    <ul>-->
+<!--    {% for message in messages %}-->
+<!--      <li>{{ message }}</li>-->
+<!--    {% endfor %}-->
+<!--    </ul>-->
+<!--    {% endif %}-->
     {% block content %}{% endblock %}
 </body>
 </html>
