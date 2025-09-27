@@ -74,9 +74,6 @@ class AddSubjectView(View):
             return redirect('my_subjects')
 
         else:
-            # for field, errors in form.errors.items():
-            #     for error in errors:
-            #         messages.error(request, error)
             return render(request, 'add_subject.html', {'form': form})
 
 
