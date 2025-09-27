@@ -2,18 +2,22 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Q
 
+DAILY_GOAL_MSG = "Daily goal must be at least 1 minute and not exceed 1080 minutes."
+STUDY_TIME_MSG = "Time studied must be at least 1 minute."
+
 class Subject(models.Model):
     name = models.CharField(
-        max_length=100,
-        unique=True
+        max_length=50,
+        unique=True,
+        error_messages={'unique': f'This subject already exists! Please enter a different name.'}
     )
     created_at = models.DateTimeField(
         auto_now_add=True
     )
     daily_goal = models.PositiveSmallIntegerField(
         validators=[
-            MinValueValidator(1),
-            MaxValueValidator(1080)
+            MinValueValidator(1, message=DAILY_GOAL_MSG),
+            MaxValueValidator(1080, message=DAILY_GOAL_MSG),
         ]
     )
 
@@ -37,7 +41,7 @@ class StudyProgress(models.Model):
     )
 
     time_studied = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(1)],
+        validators=[MinValueValidator(1, message=STUDY_TIME_MSG)]
     )
     studied_on = models.DateTimeField(
         auto_now_add=True
@@ -67,8 +71,8 @@ class EditSubject(models.Model):
 
     new_daily_goal = models.PositiveSmallIntegerField(
         validators=[
-            MinValueValidator(1),
-            MaxValueValidator(1080)
+            MinValueValidator(1, message=DAILY_GOAL_MSG),
+            MaxValueValidator(1080, message=DAILY_GOAL_MSG),
         ]
     )
 

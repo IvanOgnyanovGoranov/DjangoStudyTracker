@@ -77,10 +77,6 @@ class AddSubjectView(View):
             return render(request, 'add_subject.html', {'form': form})
 
 
-def subject_exists(request):
-    return render(request, 'subject_exists.html')
-
-
 def redirect_to_view_stats(request):
     """Redirects to the stats view."""
     return HttpResponseRedirect(reverse('view_stats'))

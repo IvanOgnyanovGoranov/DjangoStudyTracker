@@ -13,5 +13,4 @@ urlpatterns = [
     path('my-subjects/view_stats/<int:pk>/', views.stats.detailed_subject_stats, name='detailed_subject_stats'),
 
     path('add-subject/', views.subjects.AddSubjectView.as_view(), name='add_subject'),
-    path('add-subject/subject-exists/', views.subjects.subject_exists, name='subject_exists'),
 ]
