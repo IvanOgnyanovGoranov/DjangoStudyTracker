@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block page_title %} {{ subject.name|title }} — Stats {% endblock %}
+
+{% block content %}
+{% include 'includes/header.html'%}
+<!-- Hero -->
+    <div class="hero">
+      <h2>Average per study day</h2>
+      <div class="big">{{ avg_time_per_study_day }}</div>
+
+      <h2>Average per day (incl rest days)</h2>
+      <div class="big">{{ avg_time_per_day_overall }}</div>
+    </div>
+
+    <h3>Additional Information</h3>
+    <!-- Context -->
+    <ul>
+      <li>Total time: {{ total_time }}</li>
+      <li>Study days: {{ study_days }} (out of {{ days_since_started }} days)</li>
+      <li>Study frequency: {{ study_frequency_percent }}%</li>
+    </ul>
+
+    <h3>Goal Information</h3>
+    <!-- Goal -->
+    <ul>
+      <li>Daily goal: {{ daily_goal }} minutes</li>
+      <li>Goal reached: {{ goal_reached_days }} / {{ study_days_for_goal }} ({{ goal_success_rate_percent }}%)</li>
+    </ul>
+
+{% endblock %}
