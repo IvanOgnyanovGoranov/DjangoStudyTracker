@@ -9,7 +9,8 @@
     {% block css_files %} {% endblock %}
 </head>
 <body>
-    <h4>Study Tracker</h4>
+    <h4><a href="{% url 'home_page' %}" class="app-title">Study Tracker</a></h4>
+
      {% if messages %}
       <script>
         {% for msg in messages %}
