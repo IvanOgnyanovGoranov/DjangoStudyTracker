@@ -16,3 +16,4 @@ class AddSubjectForm(forms.ModelForm):
         labels = {
             'name': 'Subject Name',
         }
+

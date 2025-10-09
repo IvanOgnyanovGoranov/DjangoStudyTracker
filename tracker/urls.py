@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import home, subjects, study, stats
+from .views import home, subjects, study, stats, auth
 from .views.subjects import redirect_to_view_stats
 
 urlpatterns = [
@@ -13,4 +13,9 @@ urlpatterns = [
     path('my-subjects/view_stats/<int:pk>/', views.stats.detailed_subject_stats, name='detailed_subject_stats'),
 
     path('add-subject/', views.subjects.AddSubjectView.as_view(), name='add_subject'),
+
+    path('login/', views.auth.LoginView.as_view(), name='login'),
+    path('logout/', views.auth.LogoutView.as_view(), name='logout'),
+    path('register/', views.auth.register_user, name='register'),
+
 ]

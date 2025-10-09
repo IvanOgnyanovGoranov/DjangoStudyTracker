@@ -9,6 +9,7 @@
 {% block page_title %} Home {% endblock %}
     
     {% block content %}
+
     <ul>
         {% for view_name, label in home_page_items %}
         <li><a href="{% url view_name %}">{{ label }}</a></li>

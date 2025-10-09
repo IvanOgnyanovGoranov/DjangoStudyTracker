@@ -1,14 +1,21 @@
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Q
+from django.db.models.fields import CharField
 
 DAILY_GOAL_MSG = "Daily goal must be at least 1 minute and not exceed 1080 minutes."
 STUDY_TIME_MSG = "Time studied must be at least 1 minute."
 
 class Subject(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="subjects"
+    )
     name = models.CharField(
         max_length=50,
-        unique=True,
+        unique=False,
         error_messages={'unique': f'This subject already exists! Please enter a different name.'}
     )
     created_at = models.DateTimeField(
@@ -28,6 +35,7 @@ class Subject(models.Model):
                 name='daily_goal_range'
             )
         ]
+        unique_together = ('user', 'name')
 
     def __str__(self):
         return self.name
