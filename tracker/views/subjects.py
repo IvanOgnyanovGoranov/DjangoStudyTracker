@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
@@ -10,9 +11,12 @@ from django.contrib import messages
 from tracker.forms import EditSubjectForm, AddSubjectForm
 from django.views import View
 
+
+@login_required
 def my_subjects(request):
     subjects = Subject.objects.all().order_by('-created_at')
     return render(request, 'my_subjects.html', {'subjects': subjects})
+
 
 class ManageSubjectView(View):
 
@@ -58,6 +62,7 @@ class ManageSubjectView(View):
             subject.delete()
             messages.success(request, "Subject deleted successfully!")
             return redirect('my_subjects')
+
 
 class AddSubjectView(View):
     """User adds a new subject."""
