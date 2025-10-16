@@ -4,14 +4,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block page_title %} Study Tracker {% endblock %}</title>
+    <title>{% block page_title %}Study Tracker{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-    {% block css_files %} {% endblock %}
+    {% block css_files %}{% endblock %}
 </head>
 <body>
     <h4><a href="{% url 'home_page' %}" class="app-title">Study Tracker</a></h4>
 
-     {% if messages %}
+    {% if messages %}
       <script>
         {% for msg in messages %}
           alert("{{ msg|escapejs }}");
@@ -20,7 +20,11 @@
     {% endif %}
 
     {% if user.is_authenticated %}
-       <p>Welcome, {{ user.username }} | <a href="{% url 'logout' %}">Logout</a></p>
+        <p>Welcome, {{ user.username }}</p>
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
     {% else %}
         <a href="{% url 'login' %}">Login</a> |
         <a href="{% url 'register' %}">Register</a>

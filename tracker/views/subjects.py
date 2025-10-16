@@ -14,21 +14,21 @@ from django.views import View
 
 @login_required
 def my_subjects(request):
-    subjects = Subject.objects.all().order_by('-created_at')
+    subjects = Subject.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'my_subjects.html', {'subjects': subjects})
 
 
 class ManageSubjectView(View):
 
-    def get_subject_and_progress(self, pk):
-        subject = get_object_or_404(Subject, pk=pk)
+    def get_subject_and_progress(self, pk, user):
+        subject = get_object_or_404(Subject, pk=pk, user=user)
         subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(
             total_minutes=Coalesce(Sum('time_studied'), Value(0))
         )
         return subject, subject_progress['total_minutes']
 
     def get(self, request, pk):
-        subject, progress = self.get_subject_and_progress(pk)
+        subject, progress = self.get_subject_and_progress(pk, request.user)
         form = EditSubjectForm()
         return render(request, 'manage_subjects/subject_info.html', {
             'subject': subject,
@@ -37,7 +37,7 @@ class ManageSubjectView(View):
         })
 
     def post(self, request, pk):
-        subject, progress = self.get_subject_and_progress(pk)
+        subject, progress = self.get_subject_and_progress(pk, request.user)
         action = request.POST.get('action')
 
         if action == 'edit_goal':
@@ -74,6 +74,8 @@ class AddSubjectView(View):
         form = AddSubjectForm(request.POST)
 
         if form.is_valid():
+            subject = form.save(commit=False)
+            subject.user = request.user
             form.save()
             messages.success(request, "Subject added successfully!")
             return redirect('my_subjects')
