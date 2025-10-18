@@ -20,7 +20,7 @@ def register_user(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('my_subjects')
+            return redirect('home_page')
     else:
         form = UserCreationForm()
     return render(request, 'auth/register.html', {'form': form})

@@ -6,7 +6,6 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from tracker.models import Subject, StudyProgress
 from django.urls import reverse
-from django.template.loader import render_to_string
 from django.contrib import messages
 from tracker.forms import EditSubjectForm, AddSubjectForm
 from django.views import View
@@ -19,7 +18,6 @@ def my_subjects(request):
 
 
 class ManageSubjectView(View):
-
     def get_subject_and_progress(self, pk, user):
         subject = get_object_or_404(Subject, pk=pk, user=user)
         subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(
