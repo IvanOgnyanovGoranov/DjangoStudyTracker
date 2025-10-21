@@ -16,7 +16,14 @@ from tracker.models import StudyProgress, Subject
 
 def minutes_to_hhmm(minutes: int) -> str:
     hours, mins = divmod(int(minutes), 60)
-    return f"{hours} hours and {mins} minutes"
+
+    parts = []
+    if hours > 0:
+        parts.append(f"{hours} hour{'s' if hours != 1 else ''}")
+    if mins > 0 or not parts:
+        parts.append(f"{mins} minute{'s' if mins != 1 else ''}")
+
+    return " and ".join(parts)
 
 
 def calculate_total_minutes(subject: Subject) -> int:
