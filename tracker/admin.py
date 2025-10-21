@@ -6,11 +6,16 @@ from tracker.models import Subject, StudyProgress, EditSubject
 # Register your models here.
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ('name',
+    list_display = (
+                    'name',
                     'created_at',
                     'daily_goal',
                     'user',
                     )
+    list_filter = (
+        'user',
+        'name',
+    )
 
 
 @admin.register(StudyProgress)
@@ -26,9 +31,9 @@ class StudyProgressAdmin(admin.ModelAdmin):
 class EditSubjectAdmin(admin.ModelAdmin):
     list_display = (
         'subject',
-        'edited_at',
         'new_daily_goal',
     )
+    readonly_fields = ('edited_at',)
 
 
 
