@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 from .views import home, subjects, study, stats, auth
 from .views.auth import LogoutView, LoginView
-from .views.subjects import redirect_to_view_stats, ManageSubjectView, AddSubjectView
+from .views.subjects import ManageSubjectView, AddSubjectView
 
 urlpatterns = [
     path('', login_required(home.home_page), name='home_page'),
