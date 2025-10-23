@@ -11,17 +11,16 @@ class Subject(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name="subjects"
+        related_name="subjects",
     )
     name = models.CharField(
         max_length=50,
         unique=False,
-        error_messages={'unique': f'This subject already exists! Please enter a different name.'}
     )
     created_at = models.DateTimeField(
         auto_now_add=True
     )
-    daily_goal = models.PositiveSmallIntegerField(
+    daily_goal = models.SmallIntegerField(
         validators=[
             MinValueValidator(1, message=DAILY_GOAL_MSG),
             MaxValueValidator(1080, message=DAILY_GOAL_MSG),
@@ -77,7 +76,7 @@ class EditSubject(models.Model):
         auto_now_add=True
     )
 
-    new_daily_goal = models.PositiveSmallIntegerField(
+    new_daily_goal = models.SmallIntegerField(
         validators=[
             MinValueValidator(1, message=DAILY_GOAL_MSG),
             MaxValueValidator(1080, message=DAILY_GOAL_MSG),

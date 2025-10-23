@@ -4,12 +4,29 @@
     Add Subject
 {% endblock %}
 
-
 {% block content %}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form }}
+<div class="add-subject-container">
+    <h2 class="form-title">Add a New Subject</h2>
 
-        <button type="submit">Add</button>
+    <form method="POST" class="add-subject-form">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+
+                {% if field.errors %}
+                    <div class="field-errors">
+                        {% for error in field.errors %}
+                            <span class="error-text">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn-submit">Add Subject</button>
     </form>
+</div>
 {% endblock %}

@@ -1,79 +1,383 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@400;600;800&display=swap');
-
-html, body {
+/* ===============================
+   GLOBAL RESET & BASICS
+   =============================== */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Fira Sans Condensed", sans-serif;
-  background-color: #f9fafc;
-  color: #333;
-  line-height: 1.6;
+  font-family: system-ui, sans-serif;
 }
 
-/* Header */
-h4 {
-  margin: 0;
-  padding: 1rem 2rem;
-  background: #1e3a8a;   /* deep blue */
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-/* Main content block */
 body {
+  background-color: #f8f9fa;
+  color: #222;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: #2563eb;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* ===============================
+   APP CONTAINER & MAIN LAYOUT
+   =============================== */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
   max-width: 900px;
-  margin: 0 auto;
-  padding: 1rem;
+  margin: 2rem auto;
+  padding: 0 1rem;
 }
 
-/* Forms */
-form {
-  background: white;
-  padding: 2rem;
-  margin: 2rem 0;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+/* ===============================
+   HEADER / TOPBAR
+   =============================== */
+.topbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1f2937;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
 }
 
-input, select, textarea {
-  width: 100%;
-  padding: 0.6rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
+.app-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  color: white;
+  font-size: 2.4rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.user-line {
+  margin-right: 1rem;
+}
+
+.btn-ghost {
+  background: transparent;
   border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
+  color: black;
+  padding: 0.4rem 2rem;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-input:focus, select:focus, textarea:focus {
-  border-color: #2563eb;
-  outline: none;
-  box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* Buttons */
-button {
-  background-color: #2563eb; /* blue */
+/* ===============================
+   FLASH MESSAGES
+   =============================== */
+.flash-container {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.flash-card {
+  background: #fff;
+  border-left: 5px solid #4caf50;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 250px;
+}
+
+.flash-card[data-message-tags*="error"] {
+  border-left-color: #e53935;
+}
+
+.flash-dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+/* ===============================
+   BUTTONS
+   =============================== */
+button, .btn {
+  background-color: #2563eb;
   color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
   border-radius: 6px;
+  padding: 0.6rem 1rem;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: 600;
+  transition: background 0.2s ease;
 }
 
-button:hover {
+button:hover, .btn:hover {
   background-color: #1d4ed8;
 }
 
-/* Messages (alerts will still pop, but if you want inline styling later) */
-.message {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 6px;
+.btn-delete {
+  background-color: #dc2626;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 1.0rem;
 }
 
-.message.success { background: #dcfce7; color: #166534; }
-.message.error   { background: #fee2e2; color: #991b1b; }
-.message.info    { background: #dbeafe; color: #1e40af; }
+.btn-delete:hover {
+  background-color: #b91c1c;
+}
+
+.btn-submit {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* ===============================
+   FORMS
+   =============================== */
+form {
+  margin-top: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.error-text {
+  color: #b91c1c;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+/* ===============================
+   HOME PAGE GRID
+   =============================== */
+.home-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.home-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
+  width: 280px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-card:hover {
+  transform: translateY(-3px);
+}
+
+.home-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+/* ===============================
+   SUBJECTS PAGE
+   =============================== */
+.page-title {
+  margin-bottom: 1.5rem;
+}
+
+.subjects-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.subject-card {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.subject-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.subject-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.subject-title {
+    padding: 1rem 1rem 2rem 1rem;
+}
+/* Dropdown Menu */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background: transparent;
+  color: #444;
+  font-size: 1.0rem;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+}
+
+.dropbtn:hover {
+  background: #f3f4f6;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: #333;
+  padding: 0.6rem 1rem;
+  display: block;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-content a:last-child {
+  border-bottom: none;
+}
+
+.dropdown-content a:hover {
+  background-color: #f3f4f6;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* ===============================
+   EDIT SUBJECT PAGE
+   =============================== */
+.edit-subject-container {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subject-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.danger-zone {
+  margin: 0.5rem 0;
+  padding: 1.5rem;
+  border: 1px dashed #dc2626;
+  border-radius: 8px;
+  background: #fff5f5;
+  display: inline-block;
+}
+
+/* ===============================
+   TIMER PAGE
+   =============================== */
+#timer-display {
+  font-size: 3rem;
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+#start-btn, #stop-btn, #reset-btn, #add-time-btn {
+  margin: 0.4rem;
+}
+
+/* ===============================
+   STATS PAGE
+   =============================== */
+.hero {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.big {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 1rem;
+}
+
+/* ===============================
+   BACK BUTTON
+   =============================== */
+.back-button {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: #2563eb;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}

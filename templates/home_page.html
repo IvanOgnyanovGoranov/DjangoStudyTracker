@@ -2,17 +2,22 @@
 {% load static %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-<link rel="stylesheet" href="{% static 'tracker.css' %}">
+  <link rel="stylesheet" href="{% static 'home-page.css' %}">
 {% endblock %}
 
-{% block page_title %} Home {% endblock %}
-    
-    {% block content %}
+{% block page_title %}Home{% endblock %}
 
-    <ul>
-        {% for view_name, label in home_page_items %}
-        <li><a href="{% url view_name %}">{{ label }}</a></li>
-        {% endfor %}
-    </ul>
-    {% endblock %}
+{% block content %}
+
+<section class="home-grid">
+  {% for view_name, label in home_page_items %}
+    <article class="home-card">
+      <a href="{% url view_name %}" class="home-card-link" title="{{ label }}">
+        <div class="home-card-body">
+          <div class="home-card-title">{{ label }}</div>
+        </div>
+      </a>
+    </article>
+  {% endfor %}
+</section>
+{% endblock %}

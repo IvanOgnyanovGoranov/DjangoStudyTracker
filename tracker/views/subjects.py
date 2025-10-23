@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
@@ -69,17 +70,16 @@ class AddSubjectView(View):
         return render(request, 'add_subject.html', {'form': form})
 
     def post(self, request):
-        form = AddSubjectForm(request.POST)
+        form = AddSubjectForm(request.POST, user=request.user)
 
         if form.is_valid():
             subject = form.save(commit=False)
             subject.user = request.user
-            form.save()
+            subject.save()  # Let model validation handle duplicates
             messages.success(request, "Subject added successfully!")
             return redirect('my_subjects')
 
-        else:
-            return render(request, 'add_subject.html', {'form': form})
+        return render(request, 'add_subject.html', {'form': form})
 
 
 def redirect_to_view_stats(request):

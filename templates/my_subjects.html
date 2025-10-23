@@ -1,23 +1,28 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block css_files %}
-    <link rel="stylesheet" href="{% static 'tracker.css' %}">
-{% endblock %}
-
 {% block page_title %}Subject Manager{% endblock %}
 
 {% block content %}
+<h1 class="page-title">Your Subjects</h1>
 
-    <h1>Subjects:</h1>
-    <ul>
-        {% for subject in subjects %}
-            <li> {{ subject.name|title }} </li>
-            <a href="{% url 'manage_subject' pk=subject.pk %}"> Manage </a>
-            <a href="{% url 'start_studying' pk=subject.pk %}"> Start Studying </a>
-            <a href="{% url 'detailed_subject_stats' pk=subject.pk %}"> View Stats </a>
-        {% endfor %}
-    </ul>
-
-
+<div class="subjects-container">
+    {% for subject in subjects %}
+        <div class="subject-card">
+            <div class="subject-header">
+                <h3 class="subject-name">{{ subject.name|title }}</h3>
+                <div class="dropdown">
+                    <button class="dropbtn">⋮</button>
+                    <div class="dropdown-content">
+                        <a href="{% url 'manage_subject' pk=subject.pk %}">Manage</a>
+                        <a href="{% url 'start_studying' pk=subject.pk %}">Start Studying</a>
+                        <a href="{% url 'detailed_subject_stats' pk=subject.pk %}">View Stats</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p class="no-subjects">No subjects yet. Add one to get started!</p>
+    {% endfor %}
+</div>
 {% endblock %}

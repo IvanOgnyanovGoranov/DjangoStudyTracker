@@ -3,33 +3,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block page_title %}Study Tracker{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
-    {% block css_files %}{% endblock %}
+  <meta charset="utf-8">
+  <title>{% block page_title %}Study Tracker{% endblock %}</title>
+
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+  {% block css_files %}{% endblock %}
 </head>
 <body>
-    <h4><a href="{% url 'home_page' %}" class="app-title">Study Tracker</a></h4>
+  <div class="app-container">
 
+    <header class="topbar">
+      <div class="topbar-left"></div>
+
+      <div class="topbar-center">
+        <a href="{% url 'home_page' %}" class="app-title">Study Tracker</a>
+      </div>
+
+      <nav class="topbar-right">
+        {% if user.is_authenticated %}
+          <span class="user-line">Welcome, {{ user.username }}</span>
+
+          <!-- Logout form (POST) -->
+          <form action="{% url 'logout' %}" method="post" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-ghost">Logout</button>
+          </form>
+        {% else %}
+          <a class="btn btn-ghost" href="{% url 'login' %}">Login</a>
+          <a class="btn btn-ghost" href="{% url 'register' %}">Register</a>
+        {% endif %}
+      </nav>
+    </header>
+
+    <!-- Flash / messages area -->
     {% if messages %}
-      <script>
-        {% for msg in messages %}
-          alert("{{ msg|escapejs }}");
+      <div id="flash-messages" class="flash-container" aria-live="polite">
+        {% for message in messages %}
+          <div class="flash-card" role="status" data-message-tags="{{ message.tags }}">
+            <div class="flash-inner">
+              <div class="flash-text">{{ message }}</div>
+              <button type="button" class="btn flash-dismiss" onclick="this.closest('.flash-card').remove()" aria-label="Dismiss">✕</button>
+            </div>
+          </div>
         {% endfor %}
+      </div>
+
+      <script>
+        // auto-dismiss flash cards after 4 seconds
+        (function() {
+          const cards = document.querySelectorAll('#flash-messages .flash-card');
+          cards.forEach((c, i) => {
+            setTimeout(() => {
+              if (c && c.parentNode) c.parentNode.removeChild(c);
+            }, 4000 + i * 300);
+          });
+        })();
       </script>
     {% endif %}
 
-    {% if user.is_authenticated %}
-        <p>Welcome, {{ user.username }}</p>
-        <form action="{% url 'logout' %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
-    {% else %}
-        <a href="{% url 'login' %}">Login</a> |
-        <a href="{% url 'register' %}">Register</a>
-    {% endif %}
+    <main>
+      {% block content %}{% endblock %}
+    </main>
 
-    {% block content %}{% endblock %}
+  </div>
 </body>
 </html>

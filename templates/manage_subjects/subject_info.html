@@ -1,45 +1,53 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block page_title %}
-    Subject Info
-{% endblock %}
+{% block page_title %}Subject Info{% endblock %}
 
 {% block content %}
-{% include "includes\back_button.html" %}
+<div class="edit-subject-container">
 
-<h3>{{ subject.name|title }}</h3>
+    {% include "includes/back_button.html" %}
 
-<!-- Delete first, in danger zone -->
-<div style="margin-bottom: 1em; border: 1px solid red; padding: 10px;">
-  <form method="post" action="">
-      {% csrf_token %}
-      <input type="hidden" name="action" value="delete_subject">
-      <button type="submit" onclick="return confirmDelete()" style="color: white; background-color: red;">
-          ❌ Delete Subject
-      </button>
-  </form>
+    <h2 class="subject-title"> Subject: {{ subject.name|title }}</h2>
+    <!-- Quick link to stats -->
+    <p><a class="btn-ghost" href="{% url 'detailed_subject_stats' subject.pk %}">📊 View Statistics</a></p>
+
+    <form method="POST" class="edit-subject-form">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="edit_goal">
+
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p class="error-text">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn-submit">Update Goal</button>
+    </form>
+
+    <!-- Delete section -->
+    <div class="danger-zone">
+      <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="delete_subject">
+          <button type="submit" class="btn-delete" onclick="return confirmDelete()">
+              ❌ Delete Subject
+          </button>
+      </form>
+    </div>
+
+
+
 </div>
-
-<!-- Quick link to stats -->
-<p><a href="{% url 'detailed_subject_stats' subject.pk %}">📊 View Statistics</a></p>
-
-<!-- Edit goal -->
-<form method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="action" value="edit_goal">
-    {{ form }}
-    <button type="submit">Update Goal</button>
-</form>
 
 <script>
 function confirmDelete() {
     return confirm("Are you sure you want to delete this subject? This action cannot be undone.");
 }
 </script>
-
 {% endblock %}
-
-
-
-
