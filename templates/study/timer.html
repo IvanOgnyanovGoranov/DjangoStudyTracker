@@ -8,12 +8,12 @@
 {% include "includes\back_button.html" %}
 
   <h2>You are currently studying {{ subject.name|title }}</h2>
-  <h1>Timer</h1>
 
   <div id="timer-display" style="font-size:48px;">00:00</div>
-  <button id="start-btn">Start</button>
-  <button id="stop-btn">Stop</button>
-  <button id="reset-btn">Reset</button>
+  <div id="timer-buttons">
+    <button id="start-btn">Start</button>
+    <button id="stop-btn">Stop</button>
+    <button id="reset-btn">Reset</button>
 
   <form id="add-time-form"
         action="{% url 'add_study_time' subject_id=subject.pk %}"
@@ -25,6 +25,7 @@
       Add Time to {{ subject.name|title }}
     </button>
   </form>
+ </div>
 
   <script>
     // 2) Timer logic (same as before)
