@@ -2,7 +2,7 @@ import unittest
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .models import Subject, DAILY_GOAL_MSG, EditSubject
+from .models import Subject, DAILY_GOAL_MSG, EditSubject, StudyProgress, STUDY_TIME_MSG
 
 
 class SubjectModelTests(TestCase):
@@ -35,7 +35,7 @@ class SubjectModelTests(TestCase):
         self.assertEqual(Subject.objects.first().daily_goal, 60)
 
 
-class EditSubjectTests(TestCase):
+class EditSubjectModelTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='password')
@@ -61,6 +61,24 @@ class EditSubjectTests(TestCase):
         except ValidationError:
             self.fail("full_clean() raised ValidationError unexpectedly!")
 
+class SubjectsProgressModelTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='password')
+        self.subject = Subject.objects.create(user=self.user, name='Math', daily_goal=200)
+
+    def test_user_adds_study_progress_zero_raises_validation_error(self):
+        progress = StudyProgress(subject=self.subject, time_studied=0)
+        with self.assertRaises(ValidationError) as context:
+            progress.full_clean()
+        self.assertIn(STUDY_TIME_MSG, str(context.exception))
+
+    def test_user_adds_valid_study_time_saves_correctly(self):
+        progress = StudyProgress(subject=self.subject, time_studied=20)
+        try:
+            progress.full_clean()
+            progress.save()
+        except ValidationError:
+            self.fail("full_clean() raised ValidationError unexpectedly!")
 
 if __name__ == '__main__':
     unittest.main()
