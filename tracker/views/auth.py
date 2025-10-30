@@ -2,8 +2,6 @@ from django.contrib.auth.views import LoginView as DjangoLoginView, LogoutView a
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.views import View
-
 
 
 class LoginView(DjangoLoginView):

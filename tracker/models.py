@@ -2,12 +2,12 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Q
-from django.db.models.fields import CharField
 
 DAILY_GOAL_MSG = "Daily goal must be at least 1 minute and not exceed 1080 minutes."
 STUDY_TIME_MSG = "Time studied must be at least 1 minute."
 
 class Subject(models.Model):
+    """Represents a study subject created by a user, with a daily goal entered."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -41,6 +41,7 @@ class Subject(models.Model):
 
 
 class StudyProgress(models.Model):
+    """Represents study session entered by the user."""
     subject = models.ForeignKey(
         to=Subject,
         on_delete=models.CASCADE,
@@ -66,6 +67,7 @@ class StudyProgress(models.Model):
         return f"{self.subject.name}: {self.time_studied}m on {self.studied_on}"
 
 class EditSubject(models.Model):
+    """Represents an edit of the daily goal made by the user."""
     subject = models.ForeignKey(
         to=Subject,
         on_delete=models.CASCADE,

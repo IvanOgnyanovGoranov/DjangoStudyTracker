@@ -1,25 +1,23 @@
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.db import IntegrityError
 from django.db.models import Sum, Value
 from django.db.models.functions import Coalesce
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from tracker.models import Subject, StudyProgress
-from django.urls import reverse
 from django.contrib import messages
 from tracker.forms import EditSubjectForm, AddSubjectForm
 from django.views import View
 
 
-@login_required
 def my_subjects(request):
+    """Render all subjects belonging to the logged-in user."""
     subjects = Subject.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'my_subjects.html', {'subjects': subjects})
 
 
 class ManageSubjectView(View):
+    """View for displaying, editing, and deleting a user's subject."""
+
     def get_subject_and_progress(self, pk, user):
+        """Return a subject (owned by user) and its total studied minutes."""
         subject = get_object_or_404(Subject, pk=pk, user=user)
         subject_progress = StudyProgress.objects.filter(subject_id=subject.id).aggregate(
             total_minutes=Coalesce(Sum('time_studied'), Value(0))
@@ -27,6 +25,7 @@ class ManageSubjectView(View):
         return subject, subject_progress['total_minutes']
 
     def get(self, request, pk):
+        """Render the subject info page with progress and edit form."""
         subject, progress = self.get_subject_and_progress(pk, request.user)
         form = EditSubjectForm()
         return render(request, 'manage_subjects/subject_info.html', {
@@ -36,6 +35,7 @@ class ManageSubjectView(View):
         })
 
     def post(self, request, pk):
+        """Handle edit or delete actions for a subject."""
         subject, progress = self.get_subject_and_progress(pk, request.user)
         action = request.POST.get('action')
 
@@ -65,6 +65,7 @@ class ManageSubjectView(View):
 
 class AddSubjectView(View):
     """User adds a new subject."""
+
     def get(self, request):
         form = AddSubjectForm()
         return render(request, 'add_subject.html', {'form': form})
@@ -80,8 +81,3 @@ class AddSubjectView(View):
             return redirect('my_subjects')
 
         return render(request, 'add_subject.html', {'form': form})
-
-
-def redirect_to_view_stats(request):
-    """Redirects to the stats view."""
-    return HttpResponseRedirect(reverse('view_stats'))

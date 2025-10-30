@@ -1,35 +1,9 @@
-from enum import unique
-
-from django.db.models.aggregates import Sum
-from django.db.models.functions import Coalesce, TruncDate
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-from django.shortcuts import render, redirect, get_object_or_404
-from django.utils import timezone
-
-from tracker.models import Subject, StudyProgress
-from django.urls import reverse
-from django.template.loader import render_to_string
-
-from tracker.utils.stats import calculate_total_days_since_started, calculate_total_days_studied, \
-    calculate_total_minutes, minutes_to_hhmm, calculate_goal_reached, get_subject_summary
-
-
-# Subject Statistics – [Subject Name]
-
-# # Hero section
-#     Average time per study day: HH:MM
-#     Average time per day (including rest days): HH:MM
-#
-# # Context section
-#     Total time studied: HH:MM
-#     Study days: X days (out of Y total days since start)
-#     Study frequency: Z% of days
-
-# # Goal section
-#     Daily goal: N minutes (last updated on date)
-#     Goal reached: X times / Y study days — Z% success rate
+from django.shortcuts import render, get_object_or_404
+from tracker.models import Subject
+from tracker.utils.stats import minutes_to_hhmm, get_subject_summary
 
 def detailed_subject_stats(request, pk):
+    """Detailed overview of the subject's stats."""
     subject = get_object_or_404(Subject, pk=pk)
     stats = get_subject_summary(subject)
 

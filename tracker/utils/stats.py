@@ -1,12 +1,4 @@
-from django.db.models import Sum
-from django.db.models.functions import Coalesce, TruncDate
-from django.utils import timezone
-
-from tracker.models import StudyProgress
-
-
-# tracker/utils/stats.py
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple
 from django.db.models import Sum
 from django.db.models.functions import Coalesce, TruncDate
 from django.utils import timezone

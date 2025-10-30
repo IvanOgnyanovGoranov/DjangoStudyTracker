@@ -13,7 +13,6 @@ urlpatterns = [
     path('my-subjects/manage/<int:pk>', login_required(ManageSubjectView.as_view()), name='manage_subject'),
     path('my-subjects/view_stats/<int:pk>/', login_required(views.stats.detailed_subject_stats), name='detailed_subject_stats'),
     path('add-subject/', login_required(AddSubjectView.as_view()), name='add_subject'),
-
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', views.auth.register_user, name='register'),

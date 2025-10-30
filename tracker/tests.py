@@ -1,13 +1,13 @@
 import unittest
-from django.test import TestCase
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .models import Subject, DAILY_GOAL_MSG, EditSubject, StudyProgress, STUDY_TIME_MSG
 from .forms import AddSubjectForm, EditSubjectForm
+from django.test import TestCase
+from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class SubjectModelTests(TestCase):
-
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='password')
 
@@ -97,14 +97,6 @@ class EditSubjectFormTests(TestCase):
         self.assertIn('new_daily_goal', form.errors)
 
 
-class AddSubjectFromTests(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='password')
-        self.subject = Subject.objects.create(user=self.user, name='Math', daily_goal=60)
-
-
-
-
 class AddSubjectFormTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='password')
@@ -125,6 +117,89 @@ class AddSubjectFormTests(TestCase):
         cleaned_name = form.clean_name()
         self.assertEqual(cleaned_name, 'Physics')
 
+
+
+class AddSubjectViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='password')
+        self.client.login(username='testuser', password='password')
+        self.url = reverse('add_subject')
+
+    def test_get_add_subject_page_returns_200(self):
+        """Ensure the Add Subject page loads correctly."""
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'add_subject.html')
+
+    def test_post_valid_data_creates_subject(self):
+        """Ensure valid form submission creates a new subject."""
+        response = self.client.post(self.url, {'name': 'Math', 'daily_goal': 60})
+        self.assertEqual(response.status_code, 302)  # redirect on success
+        self.assertTrue(Subject.objects.filter(name='Math', user=self.user).exists())
+
+    def test_post_duplicate_subject_name_shows_error(self):
+        """Ensure duplicate subject name shows validation error."""
+        Subject.objects.create(user=self.user, name='Math', daily_goal=30)
+        response = self.client.post(self.url, {'name': 'Math', 'daily_goal': 40})
+        self.assertEqual(response.status_code, 200)  # form re-renders
+        self.assertContains(response, "This subject already exists!")
+
+
+class DeleteSubjectViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='password')
+        self.subject = Subject.objects.create(user=self.user, name='Math', daily_goal=30)
+        self.client.login(username='testuser', password='password')
+        self.url = reverse('manage_subject', args=[self.subject.pk])
+
+    def test_delete_subject_removes_from_db(self):
+        response = self.client.post(self.url, {'action': 'delete_subject'})
+        self.assertEqual(response.status_code, 302)  # redirect to subject list
+        self.assertFalse(Subject.objects.filter(pk=self.subject.pk).exists())
+
+
+class AddSubjectViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='password')
+        self.client.login(username='testuser', password='password')
+        self.url = reverse('add_subject')
+
+    def test_add_subject_valid_creates_subject(self):
+        response = self.client.post(self.url, {
+            'name': 'Biology',
+            'daily_goal': 60
+        })
+        self.assertEqual(response.status_code, 302)  # redirect to my_subjects
+        self.assertTrue(Subject.objects.filter(user=self.user, name='Biology').exists())
+
+    def test_add_duplicate_subject_shows_error(self):
+        Subject.objects.create(user=self.user, name='Biology', daily_goal=60)
+        response = self.client.post(self.url, {
+            'name': 'Biology',
+            'daily_goal': 60
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "This subject already exists!")
+
+
+class AddStudyTimeViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='password')
+        self.subject = Subject.objects.create(user=self.user, name='Math', daily_goal=60)
+        self.client.login(username='testuser', password='password')
+        self.url = reverse('add_study_time', args=[self.subject.pk])
+
+    def test_add_valid_study_time_creates_record(self):
+        response = self.client.post(self.url, {'minutes': 45})
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            StudyProgress.objects.filter(subject=self.subject, time_studied=45).exists()
+        )
+
+    def test_add_invalid_study_time_does_not_create_record(self):
+        response = self.client.post(self.url, {'minutes': 0})
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(StudyProgress.objects.exists())
 
 
 if __name__ == '__main__':

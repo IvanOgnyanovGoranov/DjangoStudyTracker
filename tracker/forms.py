@@ -5,12 +5,14 @@ from tracker.models import Subject, EditSubject
 
 
 class EditSubjectForm(forms.ModelForm):
+    """Form for editing the subject's daily goal"""
     class Meta:
         model = EditSubject
         fields = ['new_daily_goal']
 
 
 class AddSubjectForm(forms.ModelForm):
+    """Form for adding a new study subject with validation for duplicates."""
     class Meta:
         model = Subject
         fields = ['name', 'daily_goal']
