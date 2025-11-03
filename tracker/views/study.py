@@ -24,7 +24,7 @@ def add_study_time(request, subject_id):
             )
 
             study_session.save()
-
+            messages.success(request, f"Study time added successfully to {subject.name}!")
         else:
             messages.error(request, "Please enter a valid number of minutes.")
 
