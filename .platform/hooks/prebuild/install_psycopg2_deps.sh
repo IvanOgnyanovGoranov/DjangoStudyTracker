@@ -1,2 +1,2 @@
 #!/bin/bash
-dnf install -y gcc postgresql-server-devel
+yum install -y postgresql15-devel gcc
