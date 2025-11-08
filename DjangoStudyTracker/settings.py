@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'DjangoStudyTracker.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"postgres://{os.getenv('DB_USER', 'postgres')}:{os.getenv('DB_PASSWORD', 'password')}@{os.getenv('DB_HOST', 'localhost')}:{os.getenv('DB_PORT', '5432')}/{os.getenv('DB_NAME', 'study_tracker_db')}",
-        conn_max_age=600,
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
