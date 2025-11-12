@@ -1,5 +1,7 @@
 STUDY TRACKER
 
+**Live Demo:** [https://studytracker-1vth.onrender.com](https://studytracker-1vth.onrender.com)
+
 Study Tracker is a Django web application that helps users manage their study subjects and track daily progress.
 Each user can add subjects, set a daily study goal, and record their study sessions to monitor consistency and improvement over time.
 
@@ -11,6 +13,7 @@ FEATURES
 - Form and model validation for clean data
 - Class-based and function-based views
 - Comprehensive unit tests for models, forms, and views
+- Deployed on Render using PostgreSQL and Gunicorn 
 
 TECH STACK
 - Backend: Django 5.x (Python 3.12)
@@ -18,8 +21,9 @@ TECH STACK
 - Database: PostgreSQL
 - Authentication: Django’s built-in user system
 - Testing: Django TestCase and unittest
+- Deployment: Render (Gunicorn + Whitenoise)
 
-INSTALLATION
+INSTALLATION (Local Development)
 
 - Clone the repository:
 git clone https://github.com/yourusername/study-tracker.git
@@ -53,10 +57,11 @@ The test suite covers:
 - Model validation (subjects, edited goals, study progress)
 - Form validation (add/edit subject forms)
 - View logic (adding, deleting, and updating subjects)
-- Key Learnings
 
-THIS PROJECT DEMONSTRATES
-- How to build and structure a Django web application from scratch
+KEY LEARNINGS
+
+This Project demonstrates how to:
+- Build and structure a Django web application from scratch
 - Using class-based views effectively
 - Writing form and model validation
 - Building a test-driven Django project
@@ -66,7 +71,7 @@ FUTURE IMPROVEMENTS
 - Add study statistics and charts (e.g., with Chart.js or Plotly)
 - Add streak tracking and motivation messages
 - User profile customization
-- Deployment to a public hosting platform (e.g., Render, Railway, or Heroku)
+- Email reminders or notifications
 
 Author
 
